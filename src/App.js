@@ -8,6 +8,7 @@ import {
   IconButton,
   Input,
   InputGroup,
+  Modal,
   Nav,
   Navbar,
 } from "rsuite";
@@ -23,6 +24,7 @@ function App() {
   const [words, setWords] = useState([]);
   const [completedWords, setCompletedWords] = useState([]);
   const [completed, setCompleted] = useState(false);
+  const [wpm, setWPM] = useState(0);
 
   const expiryTimestamp = new Date();
   expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 5);
@@ -53,8 +55,7 @@ function App() {
   } = useStopwatch({ autoStart: false });
 
   const startCountDown = () => {
-    const texts =
-      "Lorem Ipsum is simply dummy text of";
+    const texts = "Lorem Ipsum is simply dummy text of";
     const words = texts.split(" ");
     setText(texts);
     setWords(words);
@@ -78,6 +79,17 @@ function App() {
     expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 5);
     timerrestart(expiryTimestamp);
     timerPause();
+    setWords([]);
+    setCompletedWords([]);
+    setCompleted(false);
+  };
+
+  const calculateWPM = () => {
+    const noWords = text.split(" ");
+    const totalTime = stopwatchMinutes + stopwatchSeconds / 60;
+    const newWPM = noWords.length / totalTime;
+    console.log(newWPM);
+    setWPM(newWPM);
   };
 
   const handleInput = (val) => {
@@ -87,15 +99,15 @@ function App() {
       if (lastLetter === " " || lastLetter === ".") {
         if (val.trim() === currentWord) {
           const newWords = [...words.slice(1)];
-          console.log(newWords, "newWords");
-          console.log(newWords.length, "newWords.length");
           const newCompletedWords = [...completedWords, currentWord];
-          console.log(newCompletedWords, "newCompletedWords");
-          console.log("----------------");
           setWords(newWords);
           setCompletedWords(newCompletedWords);
           setInputValue("");
-          setCompleted(newWords.length === 0);
+          if (newWords.length === 0) {
+            stopwatchpause();
+            setCompleted(true);
+            calculateWPM();
+          }
         }
       } else {
         setInputValue(val);
@@ -114,7 +126,7 @@ function App() {
             <Nav.Item className="nav-item">Last Speed : 85 WPM</Nav.Item>
             <Nav.Item className="nav-item">Best Speed : 109 WPM</Nav.Item>
             <Nav.Item className="nav-item">Avg Speed : 72.2 WPM</Nav.Item>
-            <Nav.Item className="nav-item">Number of Tests : 2000</Nav.Item>
+            <Nav.Item className="nav-item">No. of Tests : 2000</Nav.Item>
           </Nav>
           <Nav pullRight className="nav-controls">
             {/* <Nav.Item className="nav-item"> */}
@@ -145,6 +157,17 @@ function App() {
             {/* </Nav.Item> */}
           </Nav>
         </Navbar>
+        <Modal open={completed}>
+          <Modal.Header>
+            <Modal.Title>Modal Title</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>Typing speed : {wpm} WPM</Modal.Body>
+          <Modal.Footer>
+            <Button onClick={resetTest} appearance="subtle">
+              Close
+            </Button>
+          </Modal.Footer>
+        </Modal>
         <Container className="typing-container">
           <p className="typing-text">
             {countDownStarted &&
