@@ -31,6 +31,36 @@ code {
   color: white !important;
 }
 
+.nav-item:hover{
+  background-color: transparent !important;
+}
+
+.nav-controls{
+  background-color: transparent !important;
+  margin: 10px;
+}
+
+.restart-icon{
+  background-color: transparent !important;
+  border: 1px solid #FF4473 !important;
+  color: wheat !important;
+}
+
+.timer{
+  width: 80px;
+  font-size: 17px !important;
+}
+
+.timer-blue{
+  border-color: blue !important;
+  color: blue !important;
+}
+
+.timer-green{
+  border-color: greenyellow !important;
+  color: greenyellow !important
+}
+
 .typing-container{
   width: 80%;
   margin: 20px auto;

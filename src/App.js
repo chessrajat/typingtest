@@ -1,60 +1,105 @@
 import { useRef, useState } from "react";
-import { useTimer } from "react-timer-hook";
-import { Button, Container, Input, InputGroup, Nav, Navbar } from "rsuite";
-import ShowText from "./ShowText";
+import { useStopwatch, useTimer } from "react-timer-hook";
+import {
+  Button,
+  ButtonGroup,
+  ButtonToolbar,
+  Container,
+  IconButton,
+  Input,
+  InputGroup,
+  Nav,
+  Navbar,
+} from "rsuite";
+import ReloadIcon from "@rsuite/icons/Reload";
 
 function App() {
   const inputReference = useRef(null);
 
   const [inputValue, setInputValue] = useState("");
+  const [countDownStarted, setCountDownStarted] = useState(false);
   const [started, setStarted] = useState(false);
   const [text, setText] = useState("");
   const [words, setWords] = useState([]);
   const [completedWords, setCompletedWords] = useState([]);
   const [completed, setCompleted] = useState(false);
+
   const expiryTimestamp = new Date();
   expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 5);
+
   const {
     seconds: timerseconds,
-    minutes,
-    isRunning,
-    start,
-    restart,
+    minutes: timerminutes,
+    isRunning: timerisRunning,
+    start: timerStart,
+    restart: timerrestart,
+    pause: timerPause,
   } = useTimer({
     expiryTimestamp,
     onExpire: () => {
+      startTyping();
       inputReference.current.focus();
     },
     autoStart: false,
   });
 
-  const startTest = () => {
+  const {
+    seconds: stopwatchSeconds,
+    minutes: stopwatchMinutes,
+    isRunning: stopwatchisRunning,
+    start: stopwatchStart,
+    pause: stopwatchpause,
+    reset: stopwatchreset,
+  } = useStopwatch({ autoStart: false });
+
+  const startCountDown = () => {
     const texts =
-      "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s";
+      "Lorem Ipsum is simply dummy text of";
     const words = texts.split(" ");
     setText(texts);
     setWords(words);
+    setCountDownStarted(true);
+    timerStart();
+  };
+
+  const startTyping = () => {
     setStarted(true);
-    start();
+    stopwatchStart();
+  };
+
+  const resetTest = () => {
+    setText("");
+    setWords("");
+    setCountDownStarted(false);
+    setStarted(false);
+    stopwatchreset();
+    setInputValue("");
+    const expiryTimestamp = new Date();
+    expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 5);
+    timerrestart(expiryTimestamp);
+    timerPause();
   };
 
   const handleInput = (val) => {
-    console.log(val);
-    const lastLetter = val[val.length - 1];
-    const currentWord = words[0];
-    if (lastLetter === " " || lastLetter === ".") {
-      const newWords = [...words.slice(1)];
-      console.log(newWords, "newWords");
-      console.log(newWords.length, "newWords.length");
-      const newCompletedWords = [...completedWords, currentWord];
-      console.log(newCompletedWords, "newCompletedWords");
-      console.log("----------------");
-      setWords(newWords);
-      setCompletedWords(newCompletedWords);
-      setInputValue("");
-      setCompleted(newWords.length === 0);
-    } else {
-      setInputValue(val);
+    if (started) {
+      const lastLetter = val[val.length - 1];
+      const currentWord = words[0];
+      if (lastLetter === " " || lastLetter === ".") {
+        if (val.trim() === currentWord) {
+          const newWords = [...words.slice(1)];
+          console.log(newWords, "newWords");
+          console.log(newWords.length, "newWords.length");
+          const newCompletedWords = [...completedWords, currentWord];
+          console.log(newCompletedWords, "newCompletedWords");
+          console.log("----------------");
+          setWords(newWords);
+          setCompletedWords(newCompletedWords);
+          setInputValue("");
+          setCompleted(newWords.length === 0);
+        }
+      } else {
+        setInputValue(val);
+      }
     }
   };
 
@@ -71,17 +116,38 @@ function App() {
             <Nav.Item className="nav-item">Avg Speed : 72.2 WPM</Nav.Item>
             <Nav.Item className="nav-item">Number of Tests : 2000</Nav.Item>
           </Nav>
-          <Nav pullRight>
-            <Nav.Item className="nav-item">
-              <Button onClick={startTest}>
-                START {minutes}:{timerseconds}
+          <Nav pullRight className="nav-controls">
+            {/* <Nav.Item className="nav-item"> */}
+            <ButtonGroup>
+              <IconButton
+                className="restart-icon"
+                icon={<ReloadIcon />}
+                disabled={!countDownStarted}
+                onClick={resetTest}
+              />
+              <Button
+                className="start-button restart-icon"
+                onClick={startCountDown}
+              >
+                START
               </Button>
-            </Nav.Item>
+              <Button
+                className={`timer restart-icon ${
+                  countDownStarted && "timer-blue"
+                } ${started && "timer-green"}`}
+                disabled
+              >
+                {started
+                  ? `${stopwatchMinutes} : ${stopwatchSeconds}`
+                  : `${timerminutes} : ${timerseconds}`}
+              </Button>
+            </ButtonGroup>
+            {/* </Nav.Item> */}
           </Nav>
         </Navbar>
         <Container className="typing-container">
           <p className="typing-text">
-            {started &&
+            {countDownStarted &&
               text.split(" ").map((word, w_id) => {
                 let highlighted = false;
                 let currentWord = false;
