@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useStopwatch, useTimer } from "react-timer-hook";
 import {
   Button,
@@ -25,6 +25,13 @@ function App() {
   const [completedWords, setCompletedWords] = useState([]);
   const [completed, setCompleted] = useState(false);
   const [wpm, setWPM] = useState(0);
+
+  const [stats, setStats] = useState({
+    lastSpeed: 0,
+    bestSpeed: 0,
+    avgSpeed: 0,
+    nooftests: 0,
+  });
 
   const expiryTimestamp = new Date();
   expiryTimestamp.setSeconds(expiryTimestamp.getSeconds() + 5);
@@ -87,9 +94,25 @@ function App() {
   const calculateWPM = () => {
     const noWords = text.split(" ");
     const totalTime = stopwatchMinutes + stopwatchSeconds / 60;
-    const newWPM = noWords.length / totalTime;
-    console.log(newWPM);
+    const newWPM = Math.round((noWords.length / totalTime) * 100) / 100;
     setWPM(newWPM);
+    updateScore(newWPM);
+  };
+
+  const updateScore = (wpm) => {
+    const newbestSpeed = stats.bestSpeed < wpm ? wpm : stats.bestSpeed;
+    const newNumber = stats.nooftests + 1;
+    const newAvg =
+      Math.round(((stats.avgSpeed * (newNumber - 1) + wpm) / newNumber) * 100) /
+      100;
+    const newStat = {
+      lastSpeed: wpm,
+      bestSpeed: newbestSpeed,
+      avgSpeed: newAvg,
+      nooftests: newNumber,
+    };
+    setStats(newStat);
+    localStorage.setItem("stats", JSON.stringify(newStat));
   };
 
   const handleInput = (val) => {
@@ -115,21 +138,42 @@ function App() {
     }
   };
 
+  useEffect(() => {
+    let currstats = localStorage.getItem("stats");
+    if (currstats === null) {
+      localStorage.setItem("stats", JSON.stringify(stats));
+    } else {
+      const currstats = JSON.parse(localStorage.getItem("stats"));
+      setStats(currstats);
+    }
+  }, []);
+
   return (
     <div className="App">
       <Container className="main_container">
         <Navbar className="nav-bar">
           <Navbar.Brand href="#" className="brand-name">
-            Typing Test
+            TT
           </Navbar.Brand>
           <Nav>
-            <Nav.Item className="nav-item">Last Speed : 85 WPM</Nav.Item>
-            <Nav.Item className="nav-item">Best Speed : 109 WPM</Nav.Item>
-            <Nav.Item className="nav-item">Avg Speed : 72.2 WPM</Nav.Item>
-            <Nav.Item className="nav-item">No. of Tests : 2000</Nav.Item>
+            <Nav.Item className="nav-item">
+              Last Speed : {stats.lastSpeed} WPM
+            </Nav.Item>
+            <Nav.Item className="nav-item">
+              Best Speed : {stats.bestSpeed} WPM
+            </Nav.Item>
+            <Nav.Item className="nav-item">
+              Avg Speed : {stats.avgSpeed} WPM
+            </Nav.Item>
+            <Nav.Item className="nav-item">
+              No. of Tests : {stats.nooftests}
+            </Nav.Item>
+            {/* <Nav.Menu className="nav-item" title="Categories">
+              <Nav.Item>Company</Nav.Item>
+              <Nav.Item>Team</Nav.Item>
+            </Nav.Menu> */}
           </Nav>
           <Nav pullRight className="nav-controls">
-            {/* <Nav.Item className="nav-item"> */}
             <ButtonGroup>
               <IconButton
                 className="restart-icon"
@@ -154,16 +198,17 @@ function App() {
                   : `${timerminutes} : ${timerseconds}`}
               </Button>
             </ButtonGroup>
-            {/* </Nav.Item> */}
           </Nav>
         </Navbar>
-        <Modal open={completed}>
+        <Modal open={completed} className="complete-modal">
           <Modal.Header>
-            <Modal.Title>Modal Title</Modal.Title>
+            <Modal.Title>Typing Test Complete!</Modal.Title>
           </Modal.Header>
-          <Modal.Body>Typing speed : {wpm} WPM</Modal.Body>
+          <Modal.Body>
+            Your speed was <span className="modal-wpm">{wpm}</span> WPM
+          </Modal.Body>
           <Modal.Footer>
-            <Button onClick={resetTest} appearance="subtle">
+            <Button onClick={resetTest} className="modal-close">
               Close
             </Button>
           </Modal.Footer>
