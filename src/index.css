@@ -53,6 +53,13 @@ code {
   font-size: 17px !important;
 }
 
+.timer-modal{
+  text-align: right !important;
+  height: 100px !important;
+  width: 350px !important;
+  margin: 12% auto !important;
+}
+
 .timer-blue{
   border-color: blue !important;
   color: blue !important;
@@ -110,7 +117,7 @@ code {
   background-color: #1C1E29 !important;
   margin-top: 20% !important;
   border: 2px solid #FF4473 !important;
-  height: 300px !important;
+  height: 100% !important;
 }
 
 .rs-modal-title{

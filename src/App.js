@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useStopwatch, useTimer } from "react-timer-hook";
 import {
   Button,
@@ -11,6 +11,8 @@ import {
   Modal,
   Nav,
   Navbar,
+  Notification,
+  SelectPicker,
 } from "rsuite";
 import ReloadIcon from "@rsuite/icons/Reload";
 
@@ -24,7 +26,10 @@ function App() {
   const [words, setWords] = useState([]);
   const [completedWords, setCompletedWords] = useState([]);
   const [completed, setCompleted] = useState(false);
+  const [showCountDownModal, setShowCountDownModal] = useState(false);
   const [wpm, setWPM] = useState(0);
+
+  const categories = { computers: 2, people: 1, places: 2, science: 1 };
 
   const [stats, setStats] = useState({
     lastSpeed: 0,
@@ -46,8 +51,11 @@ function App() {
   } = useTimer({
     expiryTimestamp,
     onExpire: () => {
-      startTyping();
-      inputReference.current.focus();
+      setShowCountDownModal(false);
+      setTimeout(() => {
+        inputReference.current.focus();
+        startTyping();
+      }, 500);
     },
     autoStart: false,
   });
@@ -61,12 +69,18 @@ function App() {
     reset: stopwatchreset,
   } = useStopwatch({ autoStart: false });
 
-  const startCountDown = () => {
-    const texts = "Lorem Ipsum is simply dummy text of";
+  const startCountDown = async () => {
+    let keys = Object.keys(categories);
+    const randomCategory = keys[(keys.length * Math.random()) << 0];
+    const randomFile = Math.floor(Math.random() * categories[randomCategory]);
+    const data = await fetch(`/Texts/${randomCategory}/${randomFile}.txt`);
+    const txt_val = await data.text();
+    const texts = txt_val;
     const words = texts.split(" ");
     setText(texts);
     setWords(words);
     setCountDownStarted(true);
+    setShowCountDownModal(true);
     timerStart();
   };
 
@@ -200,7 +214,19 @@ function App() {
             </ButtonGroup>
           </Nav>
         </Navbar>
-        <Modal open={completed} className="complete-modal">
+        {/* Countdown modal */}
+
+        <Modal
+          role="alertdialog"
+          open={showCountDownModal}
+          size="xs"
+          className="timer-modal"
+        >
+          <Modal.Body>Test will start in {timerseconds} sec</Modal.Body>
+        </Modal>
+
+        {/* Complete Model */}
+        <Modal open={completed} className="complete-modal" onClose={resetTest}>
           <Modal.Header>
             <Modal.Title>Typing Test Complete!</Modal.Title>
           </Modal.Header>
