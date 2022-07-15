@@ -24,8 +24,14 @@ code {
   width: 80%;
 }
 
+.nav-score{
+  color: greenyellow;
+  font-size: 18px !important;
+  margin: 0 8px !important;
+}
+
 .brand-name{
-  color: #FF4473 !important;
+  color: #03C4A1 !important;
   font-size: 35px !important;
   padding: 3px 20px !important;
 }
@@ -44,7 +50,7 @@ code {
 
 .restart-icon{
   background-color: transparent !important;
-  border: 1px solid #FF4473 !important;
+  border: 1px solid #03C4A1 !important;
   color: wheat !important;
 }
 
@@ -61,8 +67,8 @@ code {
 }
 
 .timer-blue{
-  border-color: blue !important;
-  color: blue !important;
+  border-color: #BBE1FA !important;
+  color: #BBE1FA !important;
 }
 
 .timer-green{
@@ -90,13 +96,13 @@ code {
   vertical-align: bottom;
   height: 50px !important;
   background-color: #1C1E29 !important;
-  border:1px solid #FF4473 !important;
+  border:1px solid #03C4A1 !important;
 
 }
 
 .input-field{
   background-color: #1C1E29 !important;
-  border:1px solid #FF4473 !important;
+  border:1px solid #03C4A1 !important;
   color: white !important;
   font-size: 20px !important;
 }
@@ -116,7 +122,7 @@ code {
 .rs-modal-content{
   background-color: #1C1E29 !important;
   margin-top: 20% !important;
-  border: 2px solid #FF4473 !important;
+  border: 2px solid #03C4A1 !important;
   height: 100% !important;
 }
 
@@ -146,3 +152,5 @@ code {
 .modal-wpm{
   color: greenyellow !important;
 }
+
+

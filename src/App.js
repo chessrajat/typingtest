@@ -3,7 +3,6 @@ import { useStopwatch, useTimer } from "react-timer-hook";
 import {
   Button,
   ButtonGroup,
-  ButtonToolbar,
   Container,
   IconButton,
   Input,
@@ -11,8 +10,6 @@ import {
   Modal,
   Nav,
   Navbar,
-  Notification,
-  SelectPicker,
 } from "rsuite";
 import ReloadIcon from "@rsuite/icons/Reload";
 
@@ -29,7 +26,13 @@ function App() {
   const [showCountDownModal, setShowCountDownModal] = useState(false);
   const [wpm, setWPM] = useState(0);
 
-  const categories = { computers: 2, people: 1, places: 2, science: 1 };
+  const categories = {
+    computers: 2,
+    people: 4,
+    places: 4,
+    science: 1,
+    sports: 1,
+  };
 
   const [stats, setStats] = useState({
     lastSpeed: 0,
@@ -44,7 +47,6 @@ function App() {
   const {
     seconds: timerseconds,
     minutes: timerminutes,
-    isRunning: timerisRunning,
     start: timerStart,
     restart: timerrestart,
     pause: timerPause,
@@ -63,7 +65,6 @@ function App() {
   const {
     seconds: stopwatchSeconds,
     minutes: stopwatchMinutes,
-    isRunning: stopwatchisRunning,
     start: stopwatchStart,
     pause: stopwatchpause,
     reset: stopwatchreset,
@@ -160,7 +161,7 @@ function App() {
       const currstats = JSON.parse(localStorage.getItem("stats"));
       setStats(currstats);
     }
-  }, []);
+  }, [stats]);
 
   return (
     <div className="App">
@@ -171,16 +172,20 @@ function App() {
           </Navbar.Brand>
           <Nav>
             <Nav.Item className="nav-item">
-              Last Speed : {stats.lastSpeed} WPM
+              Last Speed : <span className="nav-score">{stats.lastSpeed}</span>
+              WPM
             </Nav.Item>
             <Nav.Item className="nav-item">
-              Best Speed : {stats.bestSpeed} WPM
+              Best Speed : <span className="nav-score">{stats.bestSpeed}</span>{" "}
+              WPM
             </Nav.Item>
             <Nav.Item className="nav-item">
-              Avg Speed : {stats.avgSpeed} WPM
+              Avg Speed : <span className="nav-score">{stats.avgSpeed}</span>{" "}
+              WPM
             </Nav.Item>
             <Nav.Item className="nav-item">
-              No. of Tests : {stats.nooftests}
+              No. of Tests :{" "}
+              <span className="nav-score">{stats.nooftests}</span>
             </Nav.Item>
             {/* <Nav.Menu className="nav-item" title="Categories">
               <Nav.Item>Company</Nav.Item>
