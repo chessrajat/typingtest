@@ -27,11 +27,13 @@ function App() {
   const [wpm, setWPM] = useState(0);
 
   const categories = {
-    computers: 2,
-    people: 4,
-    places: 4,
-    science: 1,
-    sports: 1,
+    computers: 8,
+    people: 7,
+    places: 8,
+    science: 5,
+    sports: 7,
+    movies: 3,
+    quotes: 23,
   };
 
   const [stats, setStats] = useState({
@@ -239,6 +241,15 @@ function App() {
             Your speed was <span className="modal-wpm">{wpm}</span> WPM
           </Modal.Body>
           <Modal.Footer>
+            <Button
+              onClick={() => {
+                resetTest();
+                startCountDown();
+              }}
+              className="modal-close"
+            >
+              Play Again !
+            </Button>
             <Button onClick={resetTest} className="modal-close">
               Close
             </Button>
