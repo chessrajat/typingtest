@@ -148,6 +148,8 @@ function App() {
             setCompleted(true);
             calculateWPM();
           }
+        }else{
+          setInputValue(val);
         }
       } else {
         setInputValue(val);
