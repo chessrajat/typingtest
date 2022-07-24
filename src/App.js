@@ -27,13 +27,13 @@ function App() {
   const [wpm, setWPM] = useState(0);
 
   const categories = {
-    computers: 8,
+    computers: 9,
     people: 7,
-    places: 8,
-    science: 5,
-    sports: 7,
-    movies: 3,
-    quotes: 23,
+    places: 9,
+    science: 10,
+    sports: 10,
+    movies: 7,
+    quotes: 24,
   };
 
   const [stats, setStats] = useState({
