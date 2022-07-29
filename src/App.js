@@ -16,6 +16,7 @@ import ReloadIcon from "@rsuite/icons/Reload";
 function App() {
   const inputReference = useRef(null);
 
+  const [excess, setExcess] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [countDownStarted, setCountDownStarted] = useState(false);
   const [started, setStarted] = useState(false);
@@ -134,6 +135,7 @@ function App() {
 
   const handleInput = (val) => {
     if (started) {
+      setExcess(false);
       const lastLetter = val[val.length - 1];
       const currentWord = words[0];
       if (lastLetter === " " || lastLetter === ".") {
@@ -148,10 +150,14 @@ function App() {
             setCompleted(true);
             calculateWPM();
           }
-        }else{
+        } else {
           setInputValue(val);
         }
       } else {
+        if (val.trim().length > currentWord.length) {
+          console.log("Error excess word");
+          setExcess(true);
+        }
         setInputValue(val);
       }
     }
@@ -165,7 +171,7 @@ function App() {
       const currstats = JSON.parse(localStorage.getItem("stats"));
       setStats(currstats);
     }
-  }, [stats]);
+  }, []);
 
   return (
     <div className="App">
@@ -273,7 +279,7 @@ function App() {
                   <span
                     className={`word ${highlighted && "green"} ${
                       currentWord && "underline"
-                    }`}
+                    } ${excess && currentWord && "red_background"}`}
                     key={w_id}
                   >
                     {word.split("").map((letter, l_id) => {

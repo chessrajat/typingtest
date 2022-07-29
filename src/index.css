@@ -115,6 +115,10 @@ code {
   border-bottom: 1px solid wheat;
 }
 
+.red_background{
+  background-color: #cf6679;
+}
+
 .red{
   color: red;
 }
