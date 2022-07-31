@@ -1,0 +1,1 @@
+In computer architecture, 28 bit integers, memory addresses, or other data units are those that are 28 bits wide.
