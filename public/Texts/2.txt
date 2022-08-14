@@ -1,0 +1,1 @@
+An exit status is the number returned by a computer process to its parent when it terminates.

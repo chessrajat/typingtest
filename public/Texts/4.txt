@@ -1,0 +1,1 @@
+The terminal is an interface that allows you to access the command line

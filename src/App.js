@@ -27,15 +27,17 @@ function App() {
   const [showCountDownModal, setShowCountDownModal] = useState(false);
   const [wpm, setWPM] = useState(0);
 
-  const categories = {
-    computers: 9,
-    people: 7,
-    places: 9,
-    science: 10,
-    sports: 10,
-    movies: 7,
-    quotes: 24,
-  };
+  // const categories = {
+  //   computers: 9,
+  //   people: 7,
+  //   places: 9,
+  //   science: 10,
+  //   sports: 10,
+  //   movies: 7,
+  //   quotes: 24,
+  // };
+
+  const fileCount = 87;
 
   const [stats, setStats] = useState({
     lastSpeed: 0,
@@ -74,10 +76,10 @@ function App() {
   } = useStopwatch({ autoStart: false });
 
   const startCountDown = async () => {
-    let keys = Object.keys(categories);
-    const randomCategory = keys[(keys.length * Math.random()) << 0];
-    const randomFile = Math.floor(Math.random() * categories[randomCategory]);
-    const data = await fetch(`/Texts/${randomCategory}/${randomFile}.txt`);
+    // let keys = Object.keys(categories);
+    // const randomCategory = keys[(keys.length * Math.random()) << 0];
+    const randomFile = Math.floor(Math.random() * fileCount);
+    const data = await fetch(`/Texts/${randomFile}.txt`);
     const txt_val = await data.text();
     const texts = txt_val;
     const words = texts.split(" ");
@@ -213,6 +215,7 @@ function App() {
               <Button
                 className="start-button restart-icon"
                 onClick={startCountDown}
+                disabled={started}
               >
                 START
               </Button>
