@@ -37,7 +37,7 @@ function App() {
   //   quotes: 24,
   // };
 
-  const fileCount = 87;
+  const fileCount = 100;
 
   const [stats, setStats] = useState({
     lastSpeed: 0,
