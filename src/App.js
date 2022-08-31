@@ -112,7 +112,8 @@ function App() {
   };
 
   const calculateWPM = () => {
-    const noWords = text.split(" ");
+    // const noWords = text.split(" ");
+    const noWords = completedWords;
     const totalTime = stopwatchMinutes + stopwatchSeconds / 60;
     const newWPM = Math.round((noWords.length / totalTime) * 100) / 100;
     setWPM(newWPM);
@@ -157,7 +158,6 @@ function App() {
         }
       } else {
         if (val.trim().length > currentWord.length) {
-          console.log("Error excess word");
           setExcess(true);
         }
         setInputValue(val);
@@ -174,6 +174,18 @@ function App() {
       setStats(currstats);
     }
   }, []);
+
+  useEffect(() => {
+    if (
+      stopwatchSeconds &&
+      stopwatchMinutes &&
+      stopwatchMinutes * 60 + stopwatchSeconds > 300
+    ) {
+      stopwatchpause();
+      setCompleted(true);
+      calculateWPM();
+    }
+  }, [stopwatchSeconds]);
 
   return (
     <div className="App">
