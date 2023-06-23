@@ -28,7 +28,7 @@ function App() {
   const [showCountDownModal, setShowCountDownModal] = useState(false);
   const [wpm, setWPM] = useState(0);
 
-  const fileCount = 100;
+  const fileCount = 245;
 
   const [stats, setStats] = useState({
     lastSpeed: 0,
