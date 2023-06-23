@@ -10,6 +10,7 @@ import {
   Modal,
   Nav,
   Navbar,
+  Sidebar,
 } from "rsuite";
 import ReloadIcon from "@rsuite/icons/Reload";
 
@@ -26,16 +27,6 @@ function App() {
   const [completed, setCompleted] = useState(false);
   const [showCountDownModal, setShowCountDownModal] = useState(false);
   const [wpm, setWPM] = useState(0);
-
-  // const categories = {
-  //   computers: 9,
-  //   people: 7,
-  //   places: 9,
-  //   science: 10,
-  //   sports: 10,
-  //   movies: 7,
-  //   quotes: 24,
-  // };
 
   const fileCount = 100;
 
@@ -62,7 +53,7 @@ function App() {
       setTimeout(() => {
         inputReference.current.focus();
         startTyping();
-      }, 500);
+      }, 400);
     },
     autoStart: false,
   });
@@ -76,8 +67,6 @@ function App() {
   } = useStopwatch({ autoStart: false });
 
   const startCountDown = async () => {
-    // let keys = Object.keys(categories);
-    // const randomCategory = keys[(keys.length * Math.random()) << 0];
     const randomFile = Math.floor(Math.random() * fileCount);
     const data = await fetch(`/Texts/${randomFile}.txt`);
     const txt_val = await data.text();
@@ -98,6 +87,7 @@ function App() {
   const resetTest = () => {
     setText("");
     setWords("");
+    setExcess(false);
     setCountDownStarted(false);
     setStarted(false);
     stopwatchreset();
@@ -112,7 +102,6 @@ function App() {
   };
 
   const calculateWPM = () => {
-    // const noWords = text.split(" ");
     const noWords = completedWords;
     const totalTime = stopwatchMinutes + stopwatchSeconds / 60;
     const newWPM = Math.round((noWords.length / totalTime) * 100) / 100;
@@ -154,6 +143,7 @@ function App() {
             calculateWPM();
           }
         } else {
+          setExcess(true);
           setInputValue(val);
         }
       } else {
@@ -176,6 +166,14 @@ function App() {
   }, []);
 
   useEffect(() => {
+    try {
+      try {
+        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      } catch (e) {}
+    } catch (e) {}
+  }, []);
+
+  useEffect(() => {
     if (
       stopwatchSeconds &&
       stopwatchMinutes &&
@@ -192,7 +190,7 @@ function App() {
       <Container className="main_container">
         <Navbar className="nav-bar">
           <Navbar.Brand href="#" className="brand-name">
-            TT
+            <img src="/img/logo.png" alt="logo" height="100%" />
           </Navbar.Brand>
           <Nav>
             <Nav.Item className="nav-item">
@@ -222,15 +220,27 @@ function App() {
                 className="restart-icon"
                 icon={<ReloadIcon />}
                 disabled={!countDownStarted}
-                onClick={resetTest}
+                onClick={() => {
+                  resetTest();
+                  startCountDown();
+                }}
               />
-              <Button
-                className="start-button restart-icon"
-                onClick={startCountDown}
-                disabled={started}
-              >
-                START
-              </Button>
+              {started ? (
+                <Button
+                  className="start-button restart-icon"
+                  onClick={resetTest}
+                >
+                  STOP
+                </Button>
+              ) : (
+                <Button
+                  className="start-button restart-icon"
+                  onClick={startCountDown}
+                >
+                  START
+                </Button>
+              )}
+
               <Button
                 className={`timer restart-icon ${
                   countDownStarted && "timer-blue"
@@ -261,7 +271,15 @@ function App() {
             <Modal.Title>Typing Test Complete!</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            Your speed was <span className="modal-wpm">{wpm}</span> WPM
+            Your speed was <span className="modal-wpm">{wpm}</span> WPM <br></br>
+            <ins
+              class="adsbygoogle"
+              style={{ display: "block" }}
+              data-ad-client="ca-pub-8844831487456963"
+              data-ad-slot="4875197081"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
           </Modal.Body>
           <Modal.Footer>
             <Button
@@ -278,59 +296,91 @@ function App() {
             </Button>
           </Modal.Footer>
         </Modal>
-        <Container className="typing-container">
-          <p className="typing-text">
-            {countDownStarted &&
-              text.split(" ").map((word, w_id) => {
-                let highlighted = false;
-                let currentWord = false;
-                if (completedWords.length > w_id) {
-                  highlighted = true;
-                }
-                if (completedWords.length === w_id) {
-                  currentWord = true;
-                }
-                return (
-                  <span
-                    className={`word ${highlighted && "green"} ${
-                      currentWord && "underline"
-                    } ${excess && currentWord && "red_background"}`}
-                    key={w_id}
-                  >
-                    {word.split("").map((letter, l_id) => {
-                      const isCurrentWord = w_id === completedWords.length;
-                      const isWronglyTyped = letter !== inputValue[l_id];
-                      const shouldBeHighlighted = l_id < inputValue.length;
+        <Container className="body-container">
+          <Sidebar className="ad-container-1">
+            <ins
+              class="adsbygoogle"
+              style={{ display: "block" }}
+              data-ad-client="ca-pub-8844831487456963"
+              data-ad-slot="2255158204"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+          </Sidebar>
+          <Container className="typing-container">
+            <p className="typing-text">
+              {countDownStarted ? (
+                text.split(" ").map((word, w_id) => {
+                  let highlighted = false;
+                  let currentWord = false;
+                  if (completedWords.length > w_id) {
+                    highlighted = true;
+                  }
+                  if (completedWords.length === w_id) {
+                    currentWord = true;
+                  }
+                  return (
+                    <span
+                      className={`word ${highlighted && "green"} ${
+                        currentWord && "underline"
+                      } ${excess && currentWord && "red_background"}`}
+                      key={w_id}
+                    >
+                      {word.split("").map((letter, l_id) => {
+                        const isCurrentWord = w_id === completedWords.length;
+                        const isWronglyTyped = letter !== inputValue[l_id];
+                        const shouldBeHighlighted = l_id < inputValue.length;
 
-                      return (
-                        <span
-                          className={`letter ${
-                            isCurrentWord && shouldBeHighlighted
-                              ? isWronglyTyped
-                                ? "red"
-                                : "green"
-                              : ""
-                          }`}
-                          key={l_id}
-                        >
-                          {letter}
-                        </span>
-                      );
-                    })}{" "}
-                  </span>
-                );
-              })}
-          </p>
-          <InputGroup className="input-type">
-            <Input
-              type="text"
-              placeholder="Type here..."
-              className="input-field"
-              ref={inputReference}
-              value={inputValue}
-              onChange={handleInput}
-            />
-          </InputGroup>
+                        return (
+                          <span
+                            className={`letter ${
+                              isCurrentWord && shouldBeHighlighted
+                                ? isWronglyTyped
+                                  ? "red"
+                                  : "green"
+                                : ""
+                            }`}
+                            key={l_id}
+                          >
+                            {letter}
+                          </span>
+                        );
+                      })}{" "}
+                    </span>
+                  );
+                })
+              ) : (
+                <div className="start-test-button-container">
+                  <Button
+                    className="start-test-button"
+                    onClick={startCountDown}
+                  >
+                    START TEST
+                  </Button>
+                </div>
+              )}
+            </p>
+            <InputGroup className="input-type">
+              <Input
+                type="text"
+                placeholder="Type here..."
+                className="input-field"
+                ref={inputReference}
+                value={inputValue}
+                onChange={handleInput}
+              />
+            </InputGroup>
+          </Container>
+          <Sidebar className="ad-container-2">
+            <ins
+              class="adsbygoogle"
+              style={{ display: "block" }}
+              data-ad-client="ca-pub-8844831487456963"
+              data-ad-slot="2255158204"
+              data-ad-format="auto"
+              data-full-width-responsive="true"
+            ></ins>
+          </Sidebar>
         </Container>
       </Container>
     </div>

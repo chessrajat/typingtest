@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap');
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -12,153 +14,219 @@ code {
     monospace;
 }
 
-.main_container{
+.main_container {
   background-color: #1C1E29;
-  height: 100vh;
+  min-height: 100vh !important;
+  padding-bottom: 85px !important;
 }
 
-.nav-bar{
+.nav-bar {
   background-color: #33354B !important;
   margin: 15px auto;
   border-radius: 5px;
   width: 80%;
 }
 
-.nav-score{
+.nav-score {
   color: greenyellow;
   font-size: 18px !important;
   margin: 0 8px !important;
 }
 
-.brand-name{
+.brand-name {
   color: #03C4A1 !important;
   font-size: 35px !important;
   padding: 3px 20px !important;
 }
-.nav-item{
+
+.nav-item {
   color: white !important;
 }
 
-.nav-item:hover{
+.nav-item:hover {
   background-color: transparent !important;
 }
 
-.nav-controls{
+.nav-controls {
   background-color: transparent !important;
   margin: 10px;
 }
 
-.restart-icon{
+.restart-icon {
   background-color: transparent !important;
   border: 1px solid #03C4A1 !important;
   color: wheat !important;
 }
 
-.timer{
+.timer {
   width: 80px;
   font-size: 17px !important;
 }
 
-.timer-modal{
+.timer-modal {
   text-align: right !important;
   height: 100px !important;
   width: 350px !important;
   margin: 12% auto !important;
 }
 
-.timer-blue{
+.timer-blue {
   border-color: #BBE1FA !important;
   color: #BBE1FA !important;
 }
 
-.timer-green{
+.timer-green {
   border-color: greenyellow !important;
   color: greenyellow !important
 }
 
-.typing-container{
-  width: 80%;
+.body-container {
+  display: flex;
   margin: 20px auto;
+  width: 90%;
+}
+
+.ad-container-1 {
+  width: 18%;
+}
+
+.ad-container-2 {
+  width: 18%;
+}
+
+@media screen and (min-width: 0px) and (max-width: 1000px) {
+  .ad-container-1 {
+    display: none;
+  }
+
+}
+
+@media screen and (min-width: 0px) and (max-width: 600px) {
+  .ad-container-2 {
+    display: none;
+  }
+
+}
+
+.typing-container {
+  width: 60%;
+  margin: 5px auto;
   background-color: #33354B !important;
   flex-grow: 1 !important;
 }
 
-.typing-text{
+.typing-text {
   margin: 40px 80px;
   font-size: 30px;
+  height: 500px;
+  overflow-y: auto;
+  font-family: 'Roboto Mono', monospace;
   color: wheat;
 }
 
-.input-type{
+.input-type {
   width: 80% !important;
   margin: auto auto 80px !important;
   align-self: flex-end !important;
   vertical-align: bottom;
   height: 50px !important;
   background-color: #1C1E29 !important;
-  border:1px solid #03C4A1 !important;
+  border: 1px solid #03C4A1 !important;
 
 }
 
-.input-field{
+.input-field {
   background-color: #1C1E29 !important;
-  border:1px solid #03C4A1 !important;
+  border: 1px solid #03C4A1 !important;
   color: white !important;
   font-size: 20px !important;
 }
 
-.green{
-  color: greenyellow;
+.green {
+  color: #4B4933;
 }
 
-.underline{
-  border-bottom: 1px solid wheat;
+.underline {
+  /* border-bottom: 1px solid wheat; */
+  position: relative;
 }
 
-.red_background{
+.underline::after {
+  content: "";
+  position: absolute;
+  height: 1px;
+  background: wheat;
+  top: 100%;
+  width: 85%;
+  left: 45%;
+  transform: translateX(-50%);
+}
+
+
+.red_background {
   background-color: #cf6679;
 }
 
-.red{
+.red {
   color: red;
 }
 
-.rs-modal-dialog{
+.rs-modal-dialog {
   background-color: #1C1E29 !important;
 }
 
-.rs-modal-content{
+.rs-modal-content {
   background-color: #1C1E29 !important;
   margin-top: 20% !important;
   border: 2px solid #03C4A1 !important;
   height: 100% !important;
 }
 
-.rs-modal-title{
+.rs-modal-title {
   color: white !important;
   font-size: 40px !important;
   margin-bottom: 30px !important;
   text-align: center !important;
 }
 
-.rs-modal-body{
+.rs-modal-body {
   color: white !important;
   font-size: 30px !important;
   text-align: center !important;
 }
 
-.rs-modal-footer{
+.rs-modal-footer {
   margin-top: 50px !important;
   text-align: center !important;
 }
 
-.modal-close{
+.modal-close {
   background-color: #33354B !important;
   color: white !important;
 }
 
-.modal-wpm{
+.modal-wpm {
   color: greenyellow !important;
 }
 
+.start-test-button-container {
+  width: 100% !important;
+  height: 500px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
+.start-test-button {
+  align-self: center;
+  height: 80px !important;
+  width: 350px !important;
+  font-size: 23px !important;
+  color: #03C4A1 !important;
+  background-color: #1C1E29 !important;
+  box-shadow: 0px 15px 20px rgba(46, 229, 157, 0.1) !important;
+}
+
+.start-test-button:hover {
+  color: wheat !important
+}

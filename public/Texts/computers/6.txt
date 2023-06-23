@@ -1,1 +1,0 @@
-Hopebot is a helper bot developed by Computer Hope derived from some of the work done on the Zer0 chatbot. It was initially designed to assist with and maintain order in the Computer Hope chat channel.
