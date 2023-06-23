@@ -1,1 +1,0 @@
-RationalPlan is a project management software suite for planning, managing, and tracking projects. The suite is developed by Stand By Soft, a Romanian developer.
