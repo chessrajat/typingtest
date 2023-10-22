@@ -1,0 +1,1 @@
+Although reflection mapping can be used to produce a number of useful effects, it provides only an approximation to the correct reflection information. By taking into account just the surface's reflection direction and not its position in the sphere, it models an infinitely large environment sphere.
